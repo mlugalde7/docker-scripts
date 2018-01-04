@@ -134,7 +134,7 @@ get_docker_image() {
             ;;
         magento1) echo 'adriancr/lamp'
             ;;
-        magento2) echo 'snape43/magento2'
+        magento2) echo 'kapiwebdev/lamp2'
             ;;
         laravel) echo 'adriancr/laravel'
             ;;
