@@ -1,0 +1,14 @@
+<VirtualHost *:80>
+	ServerAdmin webmaster@localhost
+	ServerName URL_PREFIX.TEMPLATE.com
+	DocumentRoot /var/www/TEMPLATEPUBLIC
+	ErrorLog logs//TEMPLATE.log
+	CustomLog logs//TEMPLATE.log combined
+
+	<Directory /var/www/TEMPLATE>
+		Options Indexes FollowSymLinks
+		AllowOverride All
+		allow from all
+	</Directory>
+</VirtualHost>
+
