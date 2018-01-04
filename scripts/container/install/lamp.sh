@@ -21,9 +21,20 @@ service mysqld start
 #Get new password (MySql 5.7 creates random psw for root user on install https://stackoverflow.com/questions/33991228/what-is-the-default-root-pasword-for-mysql-5-7)
 password=$(cat /var/log/mysqld.log | grep "A temporary password is generated for" | tail -1 | sed -n 's/.*root@localhost: //p')
 echo Root password is $password
+echo new psw is $DB_PASSWORD
 
-mysql --connect-expired-password -uroot -p"$password" -Bse "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+#TODO: if password is not empty, change to DB_PASSWORD
+	if ! is_var_empty $password; then
+		mysql --connect-expired-password -uroot -p"$password" -Bse "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
+
+	fi
+
+#mysql --connect-expired-password -uroot -p"$password" -Bse "ALTER USER 'root'@'localhost' IDENTIFIED BY '$DB_PASSWORD';"
 mysql -uroot -p"$DB_PASSWORD" < /tmp/_di/custom/dbinstall.sql
+
+
+
+
 
 #not needed, this just shows the log file line where it spits the psw. Leaving for reference
 #grep 'temporary password' /var/log/mysqld.log

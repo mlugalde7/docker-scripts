@@ -75,10 +75,34 @@ create_dbinstall_file() {
         rm -f $DBINSTALL_FILE
     fi
 
-    echo "DROP DATABASE IF EXISTS $1;" >> $DBINSTALL_FILE
-    echo "CREATE DATABASE $1;" >> $DBINSTALL_FILE
-    echo "USE $1;" >> $DBINSTALL_FILE
-    echo "source $2/custom/db.sql;" >> $DBINSTALL_FILE
+    # echo "DROP DATABASE IF EXISTS $1;" >> $DBINSTALL_FILE
+    # echo "CREATE DATABASE $1;" >> $DBINSTALL_FILE
+    # echo "USE $1;" >> $DBINSTALL_FILE
+    # echo "source $2/custom/db.sql;" >> $DBINSTALL_FILE
+   # DBINSTALL_FILE="$3/dbinstall.sql"
+   #Remove any previous dbinstall.sql file if any
+   
+
+    if  file_exists $DBINSTALL_FILE; then
+        rm -f $DBINSTALL_FILE
+    fi
+
+    if [ $1 == "new" ]; then
+        dbname="newdb"
+    else
+        dbname=$1
+    fi
+
+    echo "DROP DATABASE IF EXISTS $dbname;" >> $DBINSTALL_FILE
+    echo "CREATE DATABASE $dbname;" >> $DBINSTALL_FILE
+    echo "USE $dbname;" >> $DBINSTALL_FILE
+
+    if [ $1 != 'new' ]; then
+        echo "source $2/custom/db.sql;" >> $DBINSTALL_FILE
+    fi
+
+
+
 }
 
 #Requires argument: "start" or "install" depending on the operation needed
@@ -110,7 +134,7 @@ get_docker_image() {
             ;;
         magento1) echo 'adriancr/lamp'
             ;;
-        magento2) echo 'adriancr/magento2'
+        magento2) echo 'snape43/magento2'
             ;;
         laravel) echo 'adriancr/laravel'
             ;;
