@@ -6,7 +6,7 @@ CONFIG_FILE="/tmp/_di/custom/config.sh"
 source $CONFIG_FILE
 
 #Start mysql
-#service mysqld start
+service mysqld start
 /etc/init.d/mysqld start
 
 mysql -uroot -p"$DB_PASSWORD" < /tmp/_di/custom/dbinstall.sql
