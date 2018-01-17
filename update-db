@@ -1,0 +1,3 @@
+./scripts/host/update-db.sh $1
+
+/bin/bash

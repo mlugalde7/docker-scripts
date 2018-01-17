@@ -105,12 +105,52 @@ create_dbinstall_file() {
 
 }
 
+create_dbupdate_file() {
+    DBUPDATE_FILE="$3/dbupdate.sql"
+    #Remove any previous dbinstall.sql file if any
+    if file_exists $DBUPDATE_FILE; then
+        rm -f $DBUPDATE_FILE
+    fi
+
+    # echo "DROP DATABASE IF EXISTS $1;" >> $DBINSTALL_FILE
+    # echo "CREATE DATABASE $1;" >> $DBINSTALL_FILE
+    # echo "USE $1;" >> $DBINSTALL_FILE
+    # echo "source $2/custom/db.sql;" >> $DBINSTALL_FILE
+   # DBINSTALL_FILE="$3/dbinstall.sql"
+   #Remove any previous dbinstall.sql file if any
+   
+
+    if  file_exists $DBUPDATE_FILE; then
+        rm -f $DBUPDATE_FILE
+    fi
+
+    if [ $1 == "new" ]; then
+        dbname="newdb"
+    else
+        dbname=$1
+    fi
+
+    echo "DROP DATABASE IF EXISTS $dbname;" >> $DBUPDATE_FILE
+    echo "CREATE DATABASE $dbname;" >> $DBUPDATE_FILE
+    echo "USE $dbname;" >> $DBUPDATE_FILE
+
+    if [ $1 != 'new' ]; then
+        echo "source $2/custom/db.sql;" >> $DBUPDATE_FILE
+    fi
+
+
+
+}
+
 #Requires argument: "start" or "install" depending on the operation needed
 create_docker_run_cmd() {
     if [ "$1" == "start" ]; then
         DCMD="sh $3/scripts/container/start.sh"
     elif [ "$1" == "install" ]; then
         DCMD="sh $3/scripts/container/install/$PROJECT_TYPE.sh"
+
+    elif [ "$1" == "update-db" ]; then
+        DCMD="sh $3/scripts/container/update-db.sh $DB_NAME"
     else
         echo "create_docker_run_cmd Error: argument provided is not 'install' or 'start'"
         exit
