@@ -16,19 +16,46 @@ source $CONFIG_FILE
 #Check that the required configuration values are set and have valid values
 check_config_values
 
+
+#get param (db file)
+dbdump=$1 
+
+
+#Check that db exists
+
+#If local file, copy in current dir
+if [ -f $dbdump ]; then
+    echo "Local DB file"
+    cp $dbdump .
+#If Remote file, get to current dir
+elif [[ `wget -S --spider $dbdump  2>&1 | grep 'HTTP/1.1 200 OK'` ]]; then
+    echo "Remote DB File"
+    wget $dbdump
+elif [ $dbdump == "no" ]; then
+    echo "No DB file specified, initializing with empty DB."
+#If not, no DB File, Error an exit
+else
+    echo "DB file not found"
+    exit;
+fi
+
+
+
+
 #date
  now=`date '+%d%m%Y%H%M%S'`
  
 DB_NAME="$DB_NAME""$now"
 
-#get param (db file)
-dbdump=$1 
-wget $dbdump
+
+
+
 
 #get the file
 
 base=$(basename -- "$1")
-mv "$base" $CURRENT_DIR"/../../custom"
+
+ mv "$base" $CURRENT_DIR"/../../custom"
 
 #go to /custom
 cd $CURRENT_DIR"/../../custom"
@@ -38,6 +65,8 @@ tar -zxvf "$base"
 
 #delete original file
 rm -f "$base"
+
+
 
 #create db import file, create at custom
 
@@ -53,14 +82,3 @@ D_CMD=$(create_docker_run_cmd "update-db" $PROJECT_TYPE $DOCKER_SETUP_DIR)
 $D_CMD
 
 exit
-
-
-
-#DOCKER
-
-
-	# Backup
-	docker exec CONTAINER mysqldump -u root --password=root DATABASE > backup.sql
-
-	# Restore
-	cat backup.sql | docker exec -i CONTAINER /usr/bin/mysql -u root --password=root DATABASE
