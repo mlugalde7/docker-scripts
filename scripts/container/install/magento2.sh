@@ -12,9 +12,5 @@ pwd
 
 chmod -R 777 var/ app/etc/ pub/media pub/static generated
 
+/bin/bash
 
-
-
-
-
-echo hola
