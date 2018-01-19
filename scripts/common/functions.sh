@@ -150,7 +150,7 @@ create_docker_run_cmd() {
         DCMD="sh $3/scripts/container/install/$PROJECT_TYPE.sh"
 
     elif [ "$1" == "update-db" ]; then
-        DCMD="sh $3/scripts/container/update-db.sh $DB_NAME"
+        DCMD="sh $3/scripts/container/update-db/$PROJECT_TYPE.sh $DB_NAME"
     else
         echo "create_docker_run_cmd Error: argument provided is not 'install' or 'start'"
         exit
