@@ -81,7 +81,9 @@ done
 
 #open browser
 
-xdg-open http://local."$dbname".com/admin
+
+
+# xdg-open http://local."$dbname".com/admin open browser
 
 
 
