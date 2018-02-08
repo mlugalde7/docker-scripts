@@ -169,10 +169,10 @@ get_docker_image() {
 
     case "$type" in
 
-        lamp) echo 'kapiwebdev/test'
+        lamp) echo 'kapiwebdev/lamp'
 #        lamp) echo 'adriancr/lamp'#
             ;;
-        magento1) echo 'kapiwebdev/pamp'
+        magento1) echo 'kapiwebdev/lamp'
             ;;
         magento2) echo 'kapiwebdev/lamp2'
             ;;
