@@ -176,7 +176,7 @@ get_docker_image() {
             ;;
         magento2) echo 'kapiwebdev/lamp2'
             ;;
-        laravel) echo 'kapiwebdev/lamp'
+        laravel) echo 'kapiwebdev/lamp2'
             ;;
     esac
 }
