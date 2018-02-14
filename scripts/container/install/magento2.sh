@@ -27,7 +27,7 @@ rm -rf $DOCKER_CODE_ROOT_DIR"/var/cache"
 #go to folder
 cd $DOCKER_CODE_ROOT_DIR
 echo $DOCKER_CODE_ROOT_DIR
-exit
+
 
 
 #get cred keys repo
