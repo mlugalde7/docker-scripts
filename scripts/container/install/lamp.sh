@@ -17,6 +17,7 @@ source $CONFIG_FILE
 
 #Start MySql
 service mysqld start
+/etc/init.d/mysqld start
 
 #Get new password (MySql 5.7 creates random psw for root user on install https://stackoverflow.com/questions/33991228/what-is-the-default-root-pasword-for-mysql-5-7)
 password=$(cat /var/log/mysqld.log | grep "A temporary password is generated for" | tail -1 | sed -n 's/.*root@localhost: //p')

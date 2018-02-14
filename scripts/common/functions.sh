@@ -43,6 +43,46 @@ magento_set_config() {
 
 
 
+magento2_check_env() {
+    mage_config_file=$1
+    mage_etc_folder=$(dirname "$1")
+
+    if ! file_exists $mage_config_file; then
+        if file_exists $mage_etc_folder"app/etc/env.php."; then
+            cp $mage_etc_folder"/app/etc/env.php" $mage_config_file
+            chown 1000:1000 $mage_config_file
+        else
+            echo "No env.php file found, no template found either. Not sure if I should exit or not."
+            exit
+        fi
+    fi
+}
+magento2_set_config() {
+    if magento2_check_env $1; then
+        file=$1
+        key=$2
+        value=$3
+
+
+         sed -n 's|\"\(username\)\": \"\([^\"]*\)\"|\2|p' /var/www/magento2test/auth.json | tr -d ' '
+
+        #re="\"($key)\": \"([^\"]*)\""
+        cv=$(sed -n 's|\"($key)\": \"([^\"]*)\"|\1|p' $file | tr -d ' ')
+        echo $cv
+        
+
+        currentValue=$(sed -n 's|<'$key'><\!\[CDATA\[\(.*\)\]\]></'$key'>|\1|p' $file | tr -d ' ')
+
+        if [ -z $currentValue ]; then
+            currentValue="<"$key"><\!\[CDATA\[\\]\]><\/"$key">"
+            value="<"$key"><\!\[CDATA\["$value"\]\]><\/"$key">"
+        fi
+
+        sed -i "s/$currentValue/$value/g" $file
+    fi
+}
+
+
 configure_aliases() {
     #Configure aliases based on OS (readlink/greadlink, docker run args)
      #Linux
